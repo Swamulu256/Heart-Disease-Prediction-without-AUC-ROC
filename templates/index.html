@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartGuard AI | Disease Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div id="loading-overlay">
+    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" class="heart-rate-line" viewBox="0 0 500 200">
+        <polyline points="0,100 50,100 65,100 75,50 85,150 95,100 130,100 145,50 160,150 175,100 250,100 275,100 285,50 295,150 305,100 340,100 355,50 370,150 385,100 450,100 460,100"/>
+    </svg>
+    <div class="loading-text">Analyzing Vitals...</div>
+</div>
+
+<div class="container">
+    <header>
+        <div class="theme-switch-wrapper">
+            <span style="margin-right: 10px; font-size:0.9rem;">🌙 Mode</span>
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" onclick="toggleTheme()">
+                <div class="slider"></div>
+            </label>
+        </div>
+
+        <h1>💙 HeartGuard AI</h1>
+        <p>Advanced Clinical Decision Support System</p>
+    </header>
+
+    <form action="/predict" method="POST" onsubmit="showLoading()">
+        <div class="dashboard">
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>📋 Patient Vitals</h2>
+                    <button type="button" class="btn-demo" onclick="fillDemoData()">⚡ Auto-Fill Demo</button>
+                </div>
+
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>1. Age (Years)</label>
+                        <input type="number" name="feature1" min="1" max="100" oninput="if(parseInt(this.value) > 100) this.value = 100;" required placeholder="e.g., 55">
+                    </div>
+                    <div class="input-group">
+                        <label>2. Sex</label>
+                        <select name="feature2" required>
+                            <option value="" disabled selected>Select</option>
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>3. Chest Pain Type</label>
+                        <select name="feature3" required>
+                            <option value="0">Typical Angina</option>
+                            <option value="1">Atypical Angina</option>
+                            <option value="2">Non-anginal Pain</option>
+                            <option value="3">Asymptomatic</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>4. Resting BP (mm Hg)</label>
+                        <input type="number" name="feature4" min="50" max="200" oninput="if(parseInt(this.value) > 200) this.value = 200;" required placeholder="e.g., 120">
+                    </div>
+                    <div class="input-group">
+                        <label>5. Serum Cholesterol</label>
+                        <input type="number" name="feature5" min="100" max="600" oninput="if(parseInt(this.value) > 600) this.value = 600;" required placeholder="e.g., 200">
+                    </div>
+                    <div class="input-group">
+                        <label>6. Fasting BS > 120?</label>
+                        <select name="feature6" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>7. Resting ECG</label>
+                        <select name="feature7" required>
+                            <option value="0">Normal</option>
+                            <option value="1">ST-T Abnormality</option>
+                            <option value="2">LV Hypertrophy</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>8. Max Heart Rate</label>
+                        <input type="number" name="feature8" min="60" max="220" oninput="if(parseInt(this.value) > 220) this.value = 220;" required placeholder="e.g., 150">
+                    </div>
+                    <div class="input-group">
+                        <label>9. Exercise Angina</label>
+                        <select name="feature9" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>10. Oldpeak (ST Depr.)</label>
+                        <input type="number" name="feature10" step="0.1" min="0.0" max="6.0" oninput="if(parseFloat(this.value) > 6.0) this.value = 6.0;" required placeholder="e.g., 1.5">
+                    </div>
+                    <div class="input-group">
+                        <label>11. Slope (ST Segment)</label>
+                        <select name="feature11" required>
+                            <option value="0">Upsloping</option>
+                            <option value="1">Flat</option>
+                            <option value="2">Downsloping</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>12. Major Vessels (0-3)</label>
+                        <select name="feature12" required>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>13. Thalassemia</label>
+                        <select name="feature13" required>
+                            <option value="1">Normal</option>
+                            <option value="2">Fixed Defect</option>
+                            <option value="3">Reversible Defect</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card" style="margin-bottom: 2rem;">
+                    <h2>⚙️ Intelligence Engine</h2>
+                    <div class="input-group">
+                        <label>Select Algorithm</label>
+                        <select name="model" required>
+                            {% for m in models %}
+                            <option value="{{ m }}">{{ m }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary">Analyze Patient</button>
+                </div>
+
+                <div class="card">
+                    <h2>📊 Diagnostics Report</h2>
+
+                    {% if result is not none %}
+                        <div class="result-box">
+                            <p style="font-size: 0.9rem; color: var(--text-light);">Model: {{ model_used }}</p>
+
+                            {% if result == 1 %}
+                                <div class="status-badge status-danger">⚠ Heart Disease Detected</div>
+                                <div class="advice-box">
+                                    <strong>🛑 Recommendation:</strong>
+                                    <ul style="margin-left: 15px; margin-top: 5px;">
+                                        <li>Consult a Cardiologist immediately.</li>
+                                        <li>Monitor Blood Pressure daily.</li>
+                                    </ul>
+                                </div>
+                            {% else %}
+                                <div class="status-badge status-healthy">💚 Patient is Healthy</div>
+                                <div class="advice-box" style="background: rgba(29, 209, 161, 0.1); border-color: #2ecc71;">
+                                    <strong>✅ Recommendation:</strong>
+                                    <p style="margin-top:5px;">Maintain lifestyle. Regular checkups advised.</p>
+                                </div>
+                            {% endif %}
+
+                            {% if accuracy %}
+                            <p style="margin-top: 15px; font-weight: 600;">Confidence: {{ "%.2f"|format(accuracy) }}%</p>
+                            {% endif %}
+
+                            <button type="button" class="btn-secondary" onclick="window.print()">📄 Print Report</button>
+                        </div>
+
+                        {% if report %}
+                        <div style="overflow-x: auto; margin-top: 10px;">
+                            <table class="metrics-table">
+                                <thead><tr><th>Metric</th><th>Precision</th><th>Recall</th><th>F1</th></tr></thead>
+                                <tbody>
+                                    {% for label, metrics in report.items() %}
+                                        {% if metrics is mapping %}
+                                        <tr>
+                                            <td>{{ label }}</td>
+                                            <td>{{ "%.2f"|format(metrics['precision']) }}</td>
+                                            <td>{{ "%.2f"|format(metrics['recall']) }}</td>
+                                            <td>{{ "%.2f"|format(metrics['f1-score']) }}</td>
+                                        </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+
+                    {% else %}
+                        <div style="text-align: center; padding: 2rem; color: var(--text-light);">
+                            <p>Awaiting Input...</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    // 1. Loading Animation
+    function showLoading() {
+        document.getElementById('loading-overlay').style.display = 'flex';
+    }
+
+    // 2. Dark Mode Toggle
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    // 3. Auto-Fill Demo Data (The magic button)
+    function fillDemoData() {
+        // Random helpers
+        const rand = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+        const randFloat = (min, max) => (Math.random() * (max - min) + min).toFixed(1);
+        const pick = (opts) => opts[Math.floor(Math.random() * opts.length)];
+
+        // Set Values
+        document.querySelector('[name="feature1"]').value = rand(40, 75);  // Age
+        document.querySelector('[name="feature2"]').value = pick(["0", "1"]); // Sex
+        document.querySelector('[name="feature3"]').value = pick(["0", "1", "2", "3"]); // Chest Pain
+        document.querySelector('[name="feature4"]').value = rand(110, 160); // BP
+        document.querySelector('[name="feature5"]').value = rand(180, 300); // Chol
+        document.querySelector('[name="feature6"]').value = pick(["0", "1"]); // FBS
+        document.querySelector('[name="feature7"]').value = pick(["0", "1", "2"]); // ECG
+        document.querySelector('[name="feature8"]').value = rand(100, 180); // Max HR
+        document.querySelector('[name="feature9"]').value = pick(["0", "1"]); // Ex Angina
+        document.querySelector('[name="feature10"]').value = randFloat(0, 4); // Oldpeak
+        document.querySelector('[name="feature11"]').value = pick(["0", "1", "2"]); // Slope
+        document.querySelector('[name="feature12"]').value = pick(["0", "1", "2", "3"]); // Vessels
+        document.querySelector('[name="feature13"]').value = pick(["1", "2", "3"]); // Thal
+    }
+</script>
+
+</body>

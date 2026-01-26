@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Result</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px;">
+    <div class="card" style="text-align: center; padding: 3rem;">
+
+        <div style="font-size: 4rem; margin-bottom: 1rem;">
+            {% if prediction == 1 %} 💔 {% else %} 💚 {% endif %}
+        </div>
+
+        <h1 style="margin-bottom: 1rem;">Diagnosis Complete</h1>
+
+        <p style="color: #666; margin-bottom: 2rem;">
+            Based on the analysis using <strong>{{ model }}</strong>, the patient is predicted to have:
+        </p>
+
+        {% if prediction == 1 %}
+            <div class="status-badge status-danger" style="font-size: 1.5rem; padding: 15px 30px;">
+                Positive for Heart Disease
+            </div>
+        {% else %}
+            <div class="status-badge status-healthy" style="font-size: 1.5rem; padding: 15px 30px;">
+                Negative (Healthy)
+            </div>
+        {% endif %}
+
+        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #eee;">
+            <p><strong>Model Accuracy:</strong> {{ "%.2f"|format(accuracy) }}%</p>
+        </div>
+
+        <a href="/" class="btn-primary" style="display: inline-block; text-decoration: none; margin-top: 2rem; width: auto; padding: 10px 30px;">
+            Analyze Another Patient
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
