@@ -1,0 +1,24 @@
+2026-01-26 11:11:34,532 - INFO - The Data loaded Successfully
+2026-01-26 11:11:34,532 - INFO - We have: 1025 Rows and 14 Columns
+2026-01-26 11:11:34,532 - INFO - Missing Values:
+age         0
+sex         0
+cp          0
+trestbps    0
+chol        0
+fbs         0
+restecg     0
+thalach     0
+exang       0
+oldpeak     0
+slope       0
+ca          0
+thal        0
+target      0
+dtype: int64
+2026-01-26 11:11:34,532 - INFO - training sample820,205,820,205
+2026-01-26 11:11:43,070 - INFO - =============KNN Algorithm============
+2026-01-26 11:11:43,070 - INFO - Error in Line no : 47 : due to name 'acuracy_score' is not defined
+2026-01-26 11:11:55,787 - INFO - =============SVC Algorithm============
+2026-01-26 11:11:55,960 - INFO - Train Accuracy : 72.3170731707317
+2026-01-26 11:11:56,022 - INFO - Test Accuracy : 68.29268292682927
