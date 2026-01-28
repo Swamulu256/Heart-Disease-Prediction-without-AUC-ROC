@@ -1,117 +1,170 @@
-<!DOCTYPE html>
+#  Heart Disease Prediction without AUC & ROC – Machine Learning 
+
+This project demonstrates a **Heart Disease Prediction system**  with a simple and clean HTML-based web interface.  
+It is designed for learning, demonstration, without advanced evaluation metrics like AUC or ROC curves.
+
+##  Project Overview
+
+Heart disease is one of the leading causes of death worldwide. This project aims to show how basic health parameters can be used to **predict the risk of heart disease** using a simplified prediction logic and a user-friendly web interface.
+
+The focus of this project is:
+- Understanding the end-to-end flow of a prediction system
+- Connecting health inputs → prediction logic → result display
+- Creating a beginner-friendly ML project suitable for interviews and portfolios
+
+##  Prediction Logic
+
+The prediction is based on commonly used health indicators such as:
+- Age
+- Resting Blood Pressure
+- Cholesterol Level
+- Maximum Heart Rate
+
+A simple risk score is calculated on the client side to classify the result as:
+- Higher Risk of Heart Disease
+- Lower Risk of Heart Disease
+
+##  Technologies Used
+
+- **HTML** – Structure of the web page
+- **CSS**– Styling and layout
+-**python** – Machine Learning model development and training
+-   
+### Python Libraries
+
+- **NumPy** – Numerical computations and array operations  
+- **Pandas** – Data manipulation, cleaning, and analysis  
+- **Scikit-learn**– Machine learning algorithms and model training
+-   
+##  Features
+- Simple and clean user interface
+- No backend required
+- Instant prediction result
+- Easy to understand logic
+- No AUC, ROC curve, or complex ML metrics
+
+##  How to Run the Project
+
+1. Download or clone this repository
+2. Open the `index.html` file
+3. Enter the required health details
+4. Click on Predict
+5. View the prediction result instantly
+
+No installation or setup is required.
+
+
+##  HTML Code (index.html)
+
+```html
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Heart Disease Prediction Project</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1, h2 {
-            color: #2c3e50;
-        }
-        ul {
-            margin-left: 20px;
-        }
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            color: #777;
-            font-size: 14px;
-        }
-        code {
-            background: #f1f1f1;
-            padding: 3px 6px;
-            border-radius: 4px;
-        }
-    </style>
+  <meta charset="utf-8">
+  <title>Heart Disease Prediction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6f8;
+      padding: 40px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1e40af;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
 <div class="container">
+  <h2>Heart Disease Prediction</h2>
 
-    <h1>❤️ Heart Disease Prediction System</h1>
+  <label>Age</label>
+  <input type="number" id="age" value="50">
 
-    <p>
-        This project is a <strong>machine learning–based heart disease prediction system</strong>
-        designed to predict whether a person is likely to have heart disease based on
-        medical attributes.
-    </p>
+  <label>Sex</label>
+  <select id="sex">
+    <option value="1">Male</option>
+    <option value="0">Female</option>
+  </select>
 
-    <h2>📌 Project Objective</h2>
-    <p>
-        The main objective of this project is to assist in early detection of heart disease
-        by analyzing patient health data and providing a prediction using a trained
-        machine learning model.
-    </p>
+  <label>Resting Blood Pressure</label>
+  <input type="number" id="bp" value="130">
 
-    <h2>🧠 Machine Learning Model</h2>
-    <p>
-        The model is trained using supervised learning techniques on a heart disease dataset.
-        It learns patterns from medical parameters such as age, blood pressure, cholesterol,
-        heart rate, and other clinical factors.
-    </p>
+  <label>Cholesterol</label>
+  <input type="number" id="chol" value="240">
 
-    <h2>📊 Features Used</h2>
-    <ul>
-        <li>Age</li>
-        <li>Gender</li>
-        <li>Chest Pain Type</li>
-        <li>Resting Blood Pressure</li>
-        <li>Cholesterol Level</li>
-        <li>Fasting Blood Sugar</li>
-        <li>Maximum Heart Rate</li>
-        <li>Exercise-Induced Angina</li>
-    </ul>
+  <label>Maximum Heart Rate</label>
+  <input type="number" id="hr" value="150">
 
-    <h2>🛠️ Technologies Used</h2>
-    <ul>
-        <li>Python</li>
-        <li>Machine Learning (Scikit-learn)</li>
-        <li>HTML & CSS (Frontend)</li>
-        <li>Flask (Backend – optional)</li>
-    </ul>
+  <button onclick="predict()">Predict</button>
 
-    <h2>⚙️ How It Works</h2>
-    <ol>
-        <li>User enters medical details through the interface</li>
-        <li>Input data is processed and sent to the trained model</li>
-        <li>The model predicts whether heart disease is present or not</li>
-        <li>Prediction result is displayed to the user</li>
-    </ol>
-
-    <h2>🚀 How to Run the Project</h2>
-    <ul>
-        <li>Clone the repository</li>
-        <li>Install required libraries using <code>pip install -r requirements.txt</code></li>
-        <li>Run the application using <code>python app.py</code></li>
-        <li>Open the browser and go to <code>http://127.0.0.1:5000</code></li>
-    </ul>
-
-    <h2>📌 Conclusion</h2>
-    <p>
-        This heart disease prediction system demonstrates how machine learning can be
-        applied in healthcare to support medical decision-making and improve early diagnosis.
-    </p>
-
-    <div class="footer">
-        <p>Developed as a Machine Learning Mini Project</p>
-    </div>
-
+  <div class="result" id="result"></div>
 </div>
+
+<script>
+  function predict() {
+    const age = Number(document.getElementById('age').value);
+    const bp = Number(document.getElementById('bp').value);
+    const chol = Number(document.getElementById('chol').value);
+    const hr = Number(document.getElementById('hr').value);
+
+    // Simple demo logic (no AUC, no ROC)
+    let riskScore = age + bp + chol - hr;
+
+    const result = document.getElementById('result');
+    if (riskScore > 350) {
+      result.style.color = 'red';
+      result.textContent = 'Result: Higher risk of Heart Disease';
+    } else {
+      result.style.color = 'green';
+      result.textContent = 'Result: Lower risk of Heart Disease';
+    }
+  }
+</script>
 
 </body>
 </html>
+
+
+## 📄 License
+
+This project is open-source and available for learning and educational purposes.
+
 
