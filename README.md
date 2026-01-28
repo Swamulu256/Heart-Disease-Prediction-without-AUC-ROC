@@ -52,17 +52,6 @@ Heart-Disease-Prediction/
 
 📌 License
 
-📁 Project Structure
-Heart-Disease-Prediction/
-│
-├─ app.py                 # Flask web application
-├─ train_model.py         # Script to train and save model
-├─ heart.csv              # Dataset
-├─ requirements.txt       # Python dependencies
-├─ heart_model.pkl        # Saved trained model
-├─ scaler.pkl             # Saved scaler
-└─ target_encode.pkl      # Saved target encoder
 
-📌 License
 
 MIT License – free to use and modify.
